@@ -15,7 +15,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh;
         }
 
         /* Container for the form */
@@ -23,13 +23,15 @@
             background-color: #222;
             padding: 20px;
             border-radius: 8px;
-            width: 400px;
+            width: 90%; /* Adjusted for mobile */
+            max-width: 400px; /* Limit for larger screens */
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
         }
 
         h2 {
             text-align: center;
             color: #fff;
+            font-size: 24px; /* Adjusted for better readability */
         }
 
         /* Label styles */
@@ -52,6 +54,7 @@
             color: white;
             border: 1px solid #444;
             border-radius: 5px;
+            font-size: 14px;
         }
 
         input[type="text"]:focus,
@@ -72,10 +75,30 @@
             border: none;
             border-radius: 5px;
             cursor: pointer;
+            transition: background-color 0.3s ease;
         }
 
         button:hover {
             background-color: #ccc;
+        }
+
+        /* Responsive styles */
+        @media (max-width: 600px) {
+            h2 {
+                font-size: 20px;
+            }
+
+            input[type="text"],
+            input[type="email"],
+            input[type="tel"],
+            textarea {
+                font-size: 12px;
+            }
+
+            button {
+                font-size: 14px;
+                padding: 10px;
+            }
         }
     </style>
 </head>
@@ -84,7 +107,7 @@
 <div class="form-container">
     <h2>Product Interest Form</h2>
 
-    <form action="https://formspree.io/f/mwpkjqzn" method="POST">
+    <form id="productForm" action="https://formspree.io/f/mwpkjqzn" method="POST">
         <label for="name">Full Name:</label>
         <input type="text" id="name" name="name" required>
 
@@ -104,5 +127,33 @@
     </form>
 </div>
 
+<script>
+    document.getElementById('productForm').addEventListener('submit', function(event) {
+        event.preventDefault(); // Prevent the default form submission
+
+        const form = event.target;
+
+        // Submit the form data
+        fetch(form.action, {
+            method: form.method,
+            body: new FormData(form),
+            headers: {
+                'Accept': 'application/json'
+            }
+        }).then(response => {
+            if (response.ok) {
+                // Redirect to the WhatsApp link
+                window.location.href = 'https://wa.link/ssevmg';
+            } else {
+                alert('There was an issue submitting the form. Please try again.');
+            }
+        }).catch(error => {
+            console.error('Error:', error);
+            alert('There was an error submitting the form. Please try again later.');
+        });
+    });
+</script>
+
 </body>
 </html>
+
